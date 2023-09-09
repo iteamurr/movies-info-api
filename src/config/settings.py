@@ -64,16 +64,24 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": config("POSTGRES_DB", default="movies_info_api_db"),
-        "USER": config("POSTGRES_USER", default="agent"),
-        "PASSWORD": config("POSTGRES_PASSWORD", default="hackme"),
-        "HOST": config("POSTGRES_HOST", default="localhost"),
-        "PORT": config("POSTGRES_PORT", default=5432, cast=int),
+if config("LOCAL_DB", default=True, cast=bool):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql_psycopg2",
+            "NAME": config("POSTGRES_DB", default="movies_info_api_db"),
+            "USER": config("POSTGRES_USER", default="agent"),
+            "PASSWORD": config("POSTGRES_PASSWORD", default="hackme"),
+            "HOST": config("POSTGRES_HOST", default="localhost"),
+            "PORT": config("POSTGRES_PORT", default=5432, cast=int),
+        }
+    }
 
 
 # Password validation
