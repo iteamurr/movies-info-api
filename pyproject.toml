@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "movies-info-api"
+version = "0.1.0"
+description = "Сведения о показах фильмов в кинозалах Единой федеральной автоматизированной информационной системы сбора сведений о показах фильмов в кинозалах \"ЕАИС\" за годовой период."
+authors = ["iteamurr <iteamurr@gmail.com>"]
+readme = "README.md"
+packages = [{include = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.2.5"
+djangorestframework = "^3.14.0"
+psycopg2-binary = "^2.9.7"
+python-decouple = "^3.8"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
+isort = "^5.12.0"
+pyclean = "^2.7.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+line_length = 88
+multi_line_output = 3
+lines_after_imports = 2
+include_trailing_comma = true
