@@ -2,6 +2,14 @@
 run: # Run the service.
 		@cd src/ && poetry run python manage.py runserver 0.0.0.0:8080
 
+.PHONY: migrate
+migrate: # Apply the latest migrations.
+		@cd src/ && poetry run python manage.py migrate
+
+.PHONY: importdata
+importdata: # Fill in the database.
+		@cd src/ && poetry run python manage.py importdata ../data/data-5-structure-1.csv
+
 .PHONY: up
 up: # Create and launch service containers.
 		docker compose up -d
@@ -16,9 +24,9 @@ psql: # Log in to the service database.
 
 .PHONY: nice
 nice: # Format the code.
-		poetry run python3 -m pyclean -v src/
-		poetry run python3 -m isort src/
-		poetry run python3 -m black src/
+		poetry run python -m pyclean -v src/
+		poetry run python -m isort src/
+		poetry run python -m black src/
 
 .PHONY: env
 env: # Create .env file with variables.

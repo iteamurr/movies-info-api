@@ -1,0 +1,113 @@
+openapi: 3.0.2
+info:
+  title: 'Movies-Info-API'
+  version: '0.1.0'
+paths:
+  /api/:
+    get:
+      operationId: listMovies
+      description: 'A list of all movies from the database, divided into pages.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Movie'
+          description: ''
+      tags:
+      - api
+  /api/{movie_id}/:
+    get:
+      operationId: retrieveMovie
+      description: 'Information about a specific movie.'
+      parameters:
+      - name: movie_id
+        in: path
+        required: true
+        description: "A UUID string identifying this movie."
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+          description: ''
+      tags:
+      - api
+components:
+  schemas:
+    Movie:
+      type: object
+      properties:
+        movie_id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 1023
+        distribution_id:
+          type: string
+          nullable: true
+          maxLength: 127
+        the_amount_of_the_fee:
+          type: number
+        movie_type:
+          enum:
+          - FEAT
+          - ANIM
+          - DOCY
+          - POPSCI
+          - OTHER
+          type: string
+        age_limit:
+          type: string
+          maxLength: 255
+      required:
+      - name
+      - the_amount_of_the_fee
+      - age_limit
